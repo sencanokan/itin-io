@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 const stats = [
-  { label: "Processing Time", value: "3-4 Weeks", icon: Clock },
+  { label: "Processing Time", value: "2-4 Weeks", icon: Clock },
   { label: "Countries Served", value: "120+", icon: Globe },
   { label: "IRS Authorized", value: "CAA", icon: ShieldCheck },
 ];
@@ -108,7 +108,7 @@ export function Hero() {
               className="mx-auto mt-6 max-w-2xl text-lg text-slate-400 lg:text-xl"
             >
               Apply for your Individual Taxpayer Identification Number online.
-              IRS-authorized processing in 3-4 weeks, not months. No passport
+              IRS-authorized processing in 2-4 weeks, not months. No passport
               mailing required.
             </motion.p>
 

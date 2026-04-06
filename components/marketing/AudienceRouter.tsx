@@ -12,7 +12,7 @@ const audiences = [
     features: [
       "Apply online from anywhere in the world",
       "Keep your passport - no mailing required",
-      "Get your ITIN in 3-4 weeks",
+      "Get your ITIN in 2-4 weeks",
     ],
     cta: "Start Application",
     href: "/for-individuals",

@@ -41,7 +41,7 @@ export const processSteps: ProcessStep[] = [
     description: "We submit to the IRS and you get your number",
     detail:
       "We submit your completed application directly to the IRS. Track your application status in real-time through your dashboard. Your ITIN arrives by mail.",
-    duration: "3-4 weeks",
+    duration: "2-4 weeks",
     icon: "CheckCircle",
   },
 ];
@@ -89,7 +89,7 @@ export const detailedProcessSteps: ProcessStep[] = [
     description: "Get your tax identification number",
     detail:
       "The IRS processes your application and mails your ITIN notice (CP565) to you. We'll notify you as soon as it's issued. Your ITIN is a permanent number that doesn't expire as long as you use it regularly.",
-    duration: "3-4 weeks after submission",
+    duration: "2-4 weeks after submission",
     icon: "CheckCircle",
   },
 ];

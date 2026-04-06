@@ -26,12 +26,12 @@ const features = [
     icon: Zap,
     title: "Faster Processing",
     description:
-      "3-4 weeks through our authorized channel vs 7-11 weeks for DIY applications mailed to the IRS.",
+      "2-4 weeks through our authorized channel vs 8-12 weeks for DIY applications mailed to the IRS.",
   },
 ];
 
 const comparison = [
-  { feature: "Processing Time", caa: "3-4 weeks", diy: "7-11 weeks" },
+  { feature: "Processing Time", caa: "2-4 weeks", diy: "8-12 weeks" },
   { feature: "Passport Required", caa: "Keep yours safe", diy: "Mail to IRS" },
   { feature: "Error Review", caa: "Expert review included", diy: "Self-check" },
   { feature: "Application Support", caa: "Dedicated team", diy: "On your own" },

@@ -39,7 +39,7 @@ const steps = [
     step: 4,
     title: "Receive Your ITIN",
     description: "We submit to IRS, you get your number",
-    duration: "3-4 weeks",
+    duration: "2-4 weeks",
     icon: "CheckCircle" as keyof typeof iconMap,
     color: "bg-green-100 text-green-600",
   },

@@ -47,7 +47,7 @@ export function CTASection() {
                 {[
                   "IRS-authorized service",
                   "No passport mailing",
-                  "3-4 week processing",
+                  "2-4 week processing",
                   "100% online process",
                 ].map((feature) => (
                   <div key={feature} className="flex items-center gap-3">

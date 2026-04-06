@@ -45,7 +45,7 @@ export const individualPricing: PricingTier[] = [
       { text: "Video identity verification", included: true },
       { text: "IRS submission & tracking", included: true },
       { text: "Priority email & chat support", included: true },
-      { text: "Priority processing (3-4 weeks)", included: true },
+      { text: "Priority processing (2-4 weeks)", included: true },
       { text: "Dedicated agent", included: true },
       { text: "Family application discount", included: true },
     ],

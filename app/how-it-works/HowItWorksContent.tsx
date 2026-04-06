@@ -70,7 +70,7 @@ const steps = [
     title: "Receive Your ITIN",
     description:
       "The IRS processes your application and mails your ITIN notice (CP565) to your address. We notify you as soon as it's issued.",
-    duration: "3-4 weeks after submission",
+    duration: "2-4 weeks after submission",
     tips: [
       "Your ITIN is a permanent 9-digit number starting with 9",
       "Use it for all U.S. tax filings and financial activities",
@@ -82,13 +82,13 @@ const steps = [
 const comparison = [
   {
     feature: "Total Processing Time",
-    caa: "3-4 weeks",
-    diy: "7-11 weeks",
+    caa: "2-4 weeks",
+    diy: "8-12 weeks",
   },
   {
     feature: "Passport Handling",
     caa: "Keep your passport (video verification)",
-    diy: "Mail original to IRS for 7-11 weeks",
+    diy: "Mail original to IRS for 8-12 weeks",
   },
   {
     feature: "Application Review",
@@ -323,7 +323,7 @@ export function HowItWorksContent() {
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
-                3-4 Week Processing
+                2-4 Week Processing
               </div>
             </div>
           </motion.div>

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | ITIN.io",
   },
   description:
-    "Apply for your Individual Taxpayer Identification Number online. IRS-authorized Certifying Acceptance Agent with 3-4 week processing. No passport mailing required.",
+    "Apply for your Individual Taxpayer Identification Number online. IRS-authorized Certifying Acceptance Agent with 2-4 week processing. No passport mailing required.",
   keywords: [
     "ITIN",
     "ITIN application",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ITIN.io - Get Your ITIN Fast & Easy",
     description:
-      "IRS-authorized ITIN processing in 3-4 weeks. Apply online from anywhere in the world.",
+      "IRS-authorized ITIN processing in 2-4 weeks. Apply online from anywhere in the world.",
     url: "https://itin.io",
     siteName: "ITIN.io",
     type: "website",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ITIN.io - Get Your ITIN Fast & Easy",
     description:
-      "IRS-authorized ITIN processing in 3-4 weeks. Apply online from anywhere in the world.",
+      "IRS-authorized ITIN processing in 2-4 weeks. Apply online from anywhere in the world.",
   },
   robots: {
     index: true,

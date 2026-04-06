@@ -91,7 +91,7 @@ const detailedSteps = [
     title: "Receive Your ITIN",
     description: "Get your tax identification number",
     detail: "The IRS processes your application and mails your ITIN notice. We notify you as soon as it's issued.",
-    duration: "3-4 weeks",
+    duration: "2-4 weeks",
   },
 ];
 
@@ -404,7 +404,7 @@ export function IndividualsContent() {
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
-                3-4 Week Processing
+                2-4 Week Processing
               </div>
             </div>
           </motion.div>

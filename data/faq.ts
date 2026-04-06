@@ -12,12 +12,12 @@ export const homeFAQs: FAQItem[] = [
   {
     question: "How long does it take to get an ITIN through ITIN.io?",
     answer:
-      "As an IRS-authorized Certifying Acceptance Agent (CAA), we typically process ITIN applications in 3-4 weeks. During peak tax season (January-April), processing may take 8-10 weeks. This is significantly faster than DIY applications which take 7-11 weeks, since we submit directly through authorized channels.",
+      "As an IRS-authorized Certifying Acceptance Agent (CAA), we typically process ITIN applications in 2-4 weeks. During peak tax season (January-April), processing may take 8-10 weeks. This is significantly faster than DIY applications which take 8-12 weeks, since we submit directly through authorized channels.",
   },
   {
     question: "Do I need to mail my passport to the IRS?",
     answer:
-      "No! This is one of the biggest advantages of using a Certifying Acceptance Agent like ITIN.io. We verify your identity documents via secure video call and certify them on your behalf. You keep your passport at all times. DIY applicants must mail their original passport to the IRS and wait 7-11 weeks to get it back.",
+      "No! This is one of the biggest advantages of using a Certifying Acceptance Agent like ITIN.io. We verify your identity documents via secure video call and certify them on your behalf. You keep your passport at all times. DIY applicants must mail their original passport to the IRS and wait 8-12 weeks to get it back.",
   },
   {
     question: "Can I apply from outside the United States?",
@@ -60,7 +60,7 @@ export const individualFAQs: FAQItem[] = [
   {
     question: "What happens after I submit my application?",
     answer:
-      "After submission, the IRS reviews your application. You'll receive a notice with your ITIN by mail, typically within 3-4 weeks when filed through our CAA service. We provide status updates throughout the process so you always know where your application stands.",
+      "After submission, the IRS reviews your application. You'll receive a notice with your ITIN by mail, typically within 2-4 weeks when filed through our CAA service. We provide status updates throughout the process so you always know where your application stands.",
   },
   {
     question: "Can I apply for an ITIN for my spouse or dependents?",

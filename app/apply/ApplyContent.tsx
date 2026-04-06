@@ -250,7 +250,7 @@ export function ApplyContent() {
                       </h3>
                       <p className="mx-auto mt-3 max-w-md text-slate-600">
                         Based on your answers, you qualify for an ITIN. Start your
-                        full application now and get your ITIN in 3-4 weeks.
+                        full application now and get your ITIN in 2-4 weeks.
                       </p>
                       <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
                         <Link
@@ -268,7 +268,7 @@ export function ApplyContent() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4" />
-                          3-4 Weeks
+                          2-4 Weeks
                         </div>
                       </div>
                     </>
