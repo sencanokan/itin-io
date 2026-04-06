@@ -251,7 +251,7 @@ export function HowItWorksContent() {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-primary-600">
                     ITIN.io (CAA)
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-slate-400">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-slate-500">
                     DIY (Mail to IRS)
                   </th>
                 </tr>
@@ -272,7 +272,7 @@ export function HowItWorksContent() {
                     <td className="px-6 py-4 text-sm font-medium text-primary-600">
                       {row.caa}
                     </td>
-                    <td className="px-6 py-4 text-sm text-slate-400">
+                    <td className="px-6 py-4 text-sm text-slate-500">
                       {row.diy}
                     </td>
                   </tr>
