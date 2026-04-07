@@ -147,20 +147,18 @@ export function Footer() {
             <p className="mt-4 text-sm text-slate-400">
               Get the latest ITIN updates and tax tips delivered to your inbox.
             </p>
-            <form className="mt-4">
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
-                />
-                <button
-                  type="submit"
-                  className="rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-600"
-                >
-                  Subscribe
-                </button>
-              </div>
+            <form className="mt-4 space-y-2">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+              />
+              <button
+                type="submit"
+                className="w-full rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-600"
+              >
+                Subscribe
+              </button>
             </form>
           </div>
         </div>
