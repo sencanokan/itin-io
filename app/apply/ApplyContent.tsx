@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import {
   ArrowRight,
   ArrowLeft,
@@ -11,8 +10,15 @@ import {
   Clock,
   Lock,
   Globe,
+  User,
+  Mail,
+  MapPin,
+  FileText,
+  Send,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+type Phase = "quiz" | "form" | "submitted" | "not-eligible";
 
 interface Question {
   id: string;
@@ -28,7 +34,8 @@ const questions: Question[] = [
       {
         value: "yes",
         label: "Yes",
-        description: "I am not a U.S. citizen and do not have a Social Security Number",
+        description:
+          "I am not a U.S. citizen and do not have a Social Security Number",
       },
       {
         value: "no",
@@ -44,7 +51,8 @@ const questions: Question[] = [
       {
         value: "yes",
         label: "Yes",
-        description: "I have U.S. income, investments, property, or need to file a U.S. tax return",
+        description:
+          "I have U.S. income, investments, property, or need to file a U.S. tax return",
       },
       {
         value: "no",
@@ -70,18 +78,29 @@ const questions: Question[] = [
       {
         value: "no",
         label: "No",
-        description: "I do not have a passport but have other identity documents",
+        description:
+          "I do not have a passport but have other identity documents",
       },
     ],
   },
 ];
 
-export function ApplyContent() {
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [showResult, setShowResult] = useState(false);
+const reasons = [
+  "U.S. tax filing",
+  "U.S. bank account",
+  "Real estate investment",
+  "Business ownership",
+  "Tax treaty benefits",
+  "Spouse/dependent on U.S. return",
+  "Other",
+];
 
-  const currentQuestion = questions[step];
+export function ApplyContent() {
+  const [phase, setPhase] = useState<Phase>("quiz");
+  const [quizStep, setQuizStep] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+
+  const currentQuestion = questions[quizStep];
   const isEligible =
     answers.residency === "yes" &&
     (answers.tax_obligation === "yes" || answers.tax_obligation === "unsure");
@@ -90,39 +109,60 @@ export function ApplyContent() {
     const newAnswers = { ...answers, [currentQuestion.id]: value };
     setAnswers(newAnswers);
 
-    if (step < questions.length - 1) {
-      // If first question answered "no", skip to result
-      if (currentQuestion.id === "residency" && value === "no") {
-        setShowResult(true);
-        return;
-      }
-      if (currentQuestion.id === "tax_obligation" && value === "no") {
-        setShowResult(true);
-        return;
-      }
-      setStep(step + 1);
+    if (currentQuestion.id === "residency" && value === "no") {
+      setPhase("not-eligible");
+      return;
+    }
+    if (currentQuestion.id === "tax_obligation" && value === "no") {
+      setPhase("not-eligible");
+      return;
+    }
+
+    if (quizStep < questions.length - 1) {
+      setQuizStep(quizStep + 1);
     } else {
-      setShowResult(true);
+      setPhase(
+        newAnswers.residency === "yes" &&
+          (newAnswers.tax_obligation === "yes" ||
+            newAnswers.tax_obligation === "unsure")
+          ? "form"
+          : "not-eligible"
+      );
     }
   };
 
   const handleBack = () => {
-    if (step > 0) {
-      setStep(step - 1);
-      setShowResult(false);
+    if (quizStep > 0) {
+      setQuizStep(quizStep - 1);
     }
   };
 
   const handleReset = () => {
-    setStep(0);
+    setQuizStep(0);
     setAnswers({});
-    setShowResult(false);
+    setPhase("quiz");
   };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setPhase("submitted");
+  };
+
+  // Total steps: 3 quiz + 1 form = 4
+  const totalSteps = 4;
+  const currentStep =
+    phase === "quiz"
+      ? quizStep
+      : phase === "form"
+        ? 3
+        : phase === "submitted"
+          ? 4
+          : 0;
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-navy-900 pb-20 pt-32 lg:pb-28 lg:pt-40">
+      {/* Hero - compact */}
+      <section className="relative overflow-hidden bg-navy-900 pb-12 pt-28 lg:pb-16 lg:pt-36">
         <div className="absolute inset-0 bg-gradient-dark" />
         <motion.div
           initial={{ opacity: 0 }}
@@ -136,59 +176,53 @@ export function ApplyContent() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 backdrop-blur-sm">
-              Start Your Application
-            </span>
-            <h1 className="mt-6 text-display-lg font-bold tracking-tight text-white lg:text-display-xl">
-              Apply for Your{" "}
-              <span className="gradient-text">ITIN</span>
+            <h1 className="text-display-md font-bold tracking-tight text-white lg:text-display-lg">
+              Apply for Your <span className="gradient-text">ITIN</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400">
-              Check your eligibility in 30 seconds, then start your application.
-              Our IRS-authorized team handles the rest.
+            <p className="mx-auto mt-4 max-w-xl text-base text-slate-400">
+              Answer 3 quick questions, fill out your details, and we handle the
+              rest.
             </p>
           </motion.div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent" />
       </section>
 
-      {/* Eligibility Checker */}
-      <section className="section">
+      {/* Main Application Flow */}
+      <section className="py-12 lg:py-16">
         <div className="container-tight">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center"
-          >
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary-100 px-4 py-1.5 text-sm font-medium text-primary-700">
-              Step 1
-            </span>
-            <h2 className="mt-4 text-display-sm font-bold tracking-tight text-slate-900 lg:text-display-md">
-              Check your <span className="gradient-text">eligibility</span>
-            </h2>
-          </motion.div>
-
-          <div className="mx-auto mt-12 max-w-2xl">
-            {/* Progress */}
-            {!showResult && (
-              <div className="mb-8 flex items-center gap-2">
-                {questions.map((_, index) => (
-                  <div
-                    key={index}
-                    className={cn(
-                      "h-2 flex-1 rounded-full transition-all",
-                      index <= step ? "bg-primary-500" : "bg-slate-200"
-                    )}
-                  />
-                ))}
+          <div className="mx-auto max-w-2xl">
+            {/* Progress Bar */}
+            {phase !== "submitted" && phase !== "not-eligible" && (
+              <div className="mb-8">
+                <div className="mb-2 flex items-center justify-between text-xs text-slate-500">
+                  <span>
+                    Step {Math.min(currentStep + 1, totalSteps)} of{" "}
+                    {totalSteps}
+                  </span>
+                  <span>
+                    {phase === "quiz" ? "Eligibility Check" : "Your Details"}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {Array.from({ length: totalSteps }).map((_, index) => (
+                    <div
+                      key={index}
+                      className={cn(
+                        "h-2 flex-1 rounded-full transition-all duration-300",
+                        index <= currentStep ? "bg-primary-500" : "bg-slate-200"
+                      )}
+                    />
+                  ))}
+                </div>
               </div>
             )}
 
             <AnimatePresence mode="wait">
-              {!showResult ? (
+              {/* QUIZ PHASE */}
+              {phase === "quiz" && (
                 <motion.div
-                  key={step}
+                  key={`quiz-${quizStep}`}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
@@ -196,7 +230,7 @@ export function ApplyContent() {
                   className="rounded-2xl border border-slate-200 bg-white p-8"
                 >
                   <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
-                    Question {step + 1} of {questions.length}
+                    Question {quizStep + 1} of {questions.length}
                   </p>
                   <h3 className="mt-3 text-xl font-bold text-slate-900">
                     {currentQuestion.question}
@@ -224,7 +258,7 @@ export function ApplyContent() {
                       </button>
                     ))}
                   </div>
-                  {step > 0 && (
+                  {quizStep > 0 && (
                     <button
                       onClick={handleBack}
                       className="mt-6 flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-700"
@@ -234,73 +268,216 @@ export function ApplyContent() {
                     </button>
                   )}
                 </motion.div>
-              ) : (
+              )}
+
+              {/* APPLICATION FORM PHASE */}
+              {phase === "form" && (
                 <motion.div
+                  key="form"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="rounded-2xl border border-slate-200 bg-white p-8"
+                >
+                  {/* Eligible badge */}
+                  <div className="mb-6 flex items-center gap-3 rounded-xl bg-green-50 p-3">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <span className="text-sm font-medium text-green-800">
+                      You&apos;re eligible for an ITIN! Fill in your details to
+                      start.
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-slate-900">
+                    Your Information
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    We&apos;ll use this to prepare your application.
+                  </p>
+
+                  <form onSubmit={handleSubmit} className="mt-6 space-y-5">
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <div>
+                        <label className="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700">
+                          <User className="h-4 w-4 text-slate-400" />
+                          First Name
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                          placeholder="John"
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700">
+                          <User className="h-4 w-4 text-slate-400" />
+                          Last Name
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                          placeholder="Smith"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700">
+                        <Mail className="h-4 w-4 text-slate-400" />
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                        placeholder="john@example.com"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700">
+                        <MapPin className="h-4 w-4 text-slate-400" />
+                        Country of Citizenship
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                        placeholder="e.g. United Kingdom"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700">
+                        <FileText className="h-4 w-4 text-slate-400" />
+                        Reason for ITIN
+                      </label>
+                      <select
+                        required
+                        className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                      >
+                        <option value="">Select a reason...</option>
+                        {reasons.map((reason) => (
+                          <option key={reason} value={reason}>
+                            {reason}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="flex items-center gap-4 pt-2">
+                      <button
+                        type="button"
+                        onClick={handleReset}
+                        className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-700"
+                      >
+                        <ArrowLeft className="h-4 w-4" />
+                        Start Over
+                      </button>
+                      <button
+                        type="submit"
+                        className="group ml-auto inline-flex items-center justify-center gap-2 rounded-lg bg-primary-500 px-8 py-3 text-sm font-semibold text-white transition-all hover:bg-primary-600 hover:shadow-glow"
+                      >
+                        Submit Application
+                        <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                      </button>
+                    </div>
+                  </form>
+                </motion.div>
+              )}
+
+              {/* SUBMITTED PHASE */}
+              {phase === "submitted" && (
+                <motion.div
+                  key="submitted"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="rounded-2xl border border-slate-200 bg-white p-8 text-center"
                 >
-                  {isEligible ? (
-                    <>
-                      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-                        <CheckCircle className="h-8 w-8 text-green-600" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-slate-900">
-                        You&apos;re eligible for an ITIN!
-                      </h3>
-                      <p className="mx-auto mt-3 max-w-md text-slate-600">
-                        Based on your answers, you qualify for an ITIN. Start your
-                        full application now and get your ITIN in 2-4 weeks.
-                      </p>
-                      <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-                        <Link
-                          href="/contact"
-                          className="group inline-flex items-center justify-center gap-2 rounded-xl bg-primary-500 px-8 py-4 text-base font-semibold text-white transition-all hover:bg-primary-600 hover:shadow-glow"
-                        >
-                          Start Full Application
-                          <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                        </Link>
-                      </div>
-                      <div className="mt-6 flex items-center justify-center gap-6 text-sm text-slate-500">
-                        <div className="flex items-center gap-2">
-                          <Shield className="h-4 w-4" />
-                          IRS Authorized
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
-                          2-4 Weeks
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
-                        <Globe className="h-8 w-8 text-slate-500" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-slate-900">
-                        You may not need an ITIN
-                      </h3>
-                      <p className="mx-auto mt-3 max-w-md text-slate-600">
-                        Based on your answers, an ITIN may not be required. However,
-                        tax situations can be complex. Contact us for a free
-                        consultation to confirm.
-                      </p>
-                      <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-                        <Link
-                          href="/contact"
-                          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-500 px-8 py-4 text-base font-semibold text-white transition-all hover:bg-primary-600"
-                        >
-                          Contact Us for Guidance
-                        </Link>
-                        <button
-                          onClick={handleReset}
-                          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-8 py-4 text-base font-semibold text-slate-900 transition-all hover:bg-slate-50"
-                        >
-                          Retake Quiz
-                        </button>
-                      </div>
-                    </>
-                  )}
+                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                    <CheckCircle className="h-8 w-8 text-green-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-slate-900">
+                    Application Received!
+                  </h3>
+                  <p className="mx-auto mt-3 max-w-md text-slate-600">
+                    Thank you! Our team will review your information and reach
+                    out within 24 hours to guide you through the next steps.
+                  </p>
+                  <div className="mx-auto mt-6 max-w-sm rounded-xl bg-slate-50 p-4">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                      What happens next
+                    </p>
+                    <ol className="mt-3 space-y-2 text-left text-sm text-slate-600">
+                      <li className="flex items-start gap-2">
+                        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-xs font-bold text-primary-600">
+                          1
+                        </span>
+                        We review your eligibility details
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-xs font-bold text-primary-600">
+                          2
+                        </span>
+                        You&apos;ll receive an email with document upload instructions
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-xs font-bold text-primary-600">
+                          3
+                        </span>
+                        Schedule your video verification call
+                      </li>
+                    </ol>
+                  </div>
+                  <div className="mt-6 flex items-center justify-center gap-6 text-sm text-slate-500">
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4" />
+                      IRS Authorized
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      2-4 Weeks
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* NOT ELIGIBLE PHASE */}
+              {phase === "not-eligible" && (
+                <motion.div
+                  key="not-eligible"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="rounded-2xl border border-slate-200 bg-white p-8 text-center"
+                >
+                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
+                    <Globe className="h-8 w-8 text-slate-500" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-slate-900">
+                    You may not need an ITIN
+                  </h3>
+                  <p className="mx-auto mt-3 max-w-md text-slate-600">
+                    Based on your answers, an ITIN may not be required. However,
+                    tax situations can be complex. Contact us for a free
+                    consultation to confirm.
+                  </p>
+                  <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
+                    <a
+                      href="mailto:hello@itin.io"
+                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-500 px-8 py-4 text-base font-semibold text-white transition-all hover:bg-primary-600"
+                    >
+                      Contact Us for Guidance
+                    </a>
+                    <button
+                      onClick={handleReset}
+                      className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-8 py-4 text-base font-semibold text-slate-900 transition-all hover:bg-slate-50"
+                    >
+                      Retake Quiz
+                    </button>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -309,7 +486,7 @@ export function ApplyContent() {
       </section>
 
       {/* Security Assurance */}
-      <section className="section bg-slate-50">
+      <section className="py-12 bg-slate-50">
         <div className="container-wide">
           <div className="mx-auto max-w-4xl">
             <div className="grid gap-6 md:grid-cols-3">
@@ -317,17 +494,20 @@ export function ApplyContent() {
                 {
                   icon: Lock,
                   title: "256-bit Encryption",
-                  description: "Your data is encrypted in transit and at rest using industry-standard protocols.",
+                  description:
+                    "Your data is encrypted in transit and at rest.",
                 },
                 {
                   icon: Shield,
                   title: "IRS Compliant",
-                  description: "All processes follow IRS Acceptance Agent Program requirements.",
+                  description:
+                    "All processes follow IRS Acceptance Agent requirements.",
                 },
                 {
                   icon: Globe,
                   title: "GDPR Compliant",
-                  description: "We follow international data protection regulations for all applicants.",
+                  description:
+                    "International data protection for all applicants.",
                 },
               ].map((item, index) => (
                 <motion.div
@@ -342,7 +522,9 @@ export function ApplyContent() {
                     <item.icon className="h-6 w-6 text-primary-600" />
                   </div>
                   <h3 className="font-semibold text-slate-900">{item.title}</h3>
-                  <p className="mt-2 text-sm text-slate-600">{item.description}</p>
+                  <p className="mt-2 text-sm text-slate-600">
+                    {item.description}
+                  </p>
                 </motion.div>
               ))}
             </div>
