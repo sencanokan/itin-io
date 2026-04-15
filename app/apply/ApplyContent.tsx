@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowRight,
   ArrowLeft,
   CheckCircle,
   Shield,
@@ -101,9 +100,6 @@ export function ApplyContent() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
 
   const currentQuestion = questions[quizStep];
-  const isEligible =
-    answers.residency === "yes" &&
-    (answers.tax_obligation === "yes" || answers.tax_obligation === "unsure");
 
   const handleAnswer = (value: string) => {
     const newAnswers = { ...answers, [currentQuestion.id]: value };
