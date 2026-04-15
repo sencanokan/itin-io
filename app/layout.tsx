@@ -36,12 +36,21 @@ export const metadata: Metadata = {
     url: "https://itin.io",
     siteName: "ITIN.io",
     type: "website",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "ITIN.io - Get Your ITIN Fast & Easy",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "ITIN.io - Get Your ITIN Fast & Easy",
     description:
       "IRS-authorized ITIN processing in 2-4 weeks. Apply online from anywhere in the world.",
+    images: ["/images/og-image.png"],
   },
   robots: {
     index: true,
