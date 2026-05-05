@@ -171,7 +171,22 @@ No. A Social Security Number or tax ID from another country cannot be used for U
 - Need to file a U.S. tax return but cannot get an SSN
 - Are the spouse or dependent of a U.S. taxpayer
 
-If you're unsure which number you need, or if you need help applying for an ITIN, working with an IRS-authorized Certifying Acceptance Agent like Clemta can help you navigate the process efficiently and avoid costly mistakes.`,
+If you're unsure which number you need, or if you need help applying for an ITIN, working with an IRS-authorized Certifying Acceptance Agent can help you navigate the process efficiently and avoid costly mistakes.
+
+---
+
+## Get Your ITIN with ITIN.io
+
+Skip the hassle and get your ITIN in 2-4 weeks. As an IRS-authorized Certifying Acceptance Agent, we handle everything — form preparation, document verification via video call, and direct IRS submission. No passport mailing required.
+
+**Why choose ITIN.io?**
+- IRS-authorized Certifying Acceptance Agent (CAA)
+- 2-4 week processing (vs 8-12 weeks DIY)
+- Keep your passport — verify via video call
+- Expert review prevents costly rejections
+- Track your application status in real-time
+
+[Start your ITIN application today](/apply) or [view our pricing](/pricing) to get started.`,
 };
 
 export default post;

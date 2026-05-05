@@ -338,11 +338,18 @@ A certified copy bears an official stamp, seal, or certification from the issuin
 
 ---
 
-## Ready to Apply?
+## Get Your ITIN with ITIN.io
 
-Don't let document requirements delay your ITIN. [Start your application with ITIN.io](/apply) and let our IRS-authorized team guide you through every step. We'll review your documents, prepare your forms, and ensure everything is perfect before submission.
+Skip the hassle and get your ITIN in 2-4 weeks. As an IRS-authorized Certifying Acceptance Agent, we handle everything — form preparation, document verification via video call, and direct IRS submission. No passport mailing required.
 
-[Get Started - Apply Now](/apply) | [Have Questions? Contact Us](/contact)`,
+**Why choose ITIN.io?**
+- IRS-authorized Certifying Acceptance Agent (CAA)
+- 2-4 week processing (vs 8-12 weeks DIY)
+- Keep your passport — verify via video call
+- Expert review prevents costly rejections
+- Track your application status in real-time
+
+[Start your ITIN application today](/apply) or [view our pricing](/pricing) to get started.`,
 };
 
 export default post;

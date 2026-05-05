@@ -257,9 +257,18 @@ No. When you renew, you keep the same ITIN. The IRS simply reactivates your exis
 
 If you have become eligible for a Social Security Number (for example, you received work authorization), you should apply for an SSN instead of renewing your ITIN. Once you receive your SSN, notify the IRS to merge your tax records.
 
-## Start Your ITIN Renewal Today
+## Get Your ITIN with ITIN.io
 
-Don't wait until you need to file your tax return to discover your ITIN has expired. Renewing early ensures you're ready when tax season arrives. As an IRS-authorized Certifying Acceptance Agent, Clemta can verify your documents, prepare your Form W-7, and submit your renewal -- all without you having to mail your passport or visit an IRS office.`,
+Skip the hassle and get your ITIN in 2-4 weeks. As an IRS-authorized Certifying Acceptance Agent, we handle everything — form preparation, document verification via video call, and direct IRS submission. No passport mailing required.
+
+**Why choose ITIN.io?**
+- IRS-authorized Certifying Acceptance Agent (CAA)
+- 2-4 week processing (vs 8-12 weeks DIY)
+- Keep your passport — verify via video call
+- Expert review prevents costly rejections
+- Track your application status in real-time
+
+[Start your ITIN application today](/apply) or [view our pricing](/pricing) to get started.`,
 };
 
 export default post;

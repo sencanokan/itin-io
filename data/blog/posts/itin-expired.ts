@@ -296,11 +296,18 @@ No. There's no deadline or time limit for renewal. You can renew an expired ITIN
 
 ---
 
-## Get Your ITIN Renewed Quickly
+## Get Your ITIN with ITIN.io
 
-Don't let an expired ITIN delay your tax filing or prevent you from claiming credits you deserve. [Start your renewal with ITIN.io](/apply) and get your ITIN reactivated in as little as 2-4 weeks. Our IRS-authorized CAA team handles everything - you keep your passport and original documents the entire time.
+Skip the hassle and get your ITIN in 2-4 weeks. As an IRS-authorized Certifying Acceptance Agent, we handle everything — form preparation, document verification via video call, and direct IRS submission. No passport mailing required.
 
-[Renew My ITIN Now](/apply) | [Questions? Contact Us](/contact)`,
+**Why choose ITIN.io?**
+- IRS-authorized Certifying Acceptance Agent (CAA)
+- 2-4 week processing (vs 8-12 weeks DIY)
+- Keep your passport — verify via video call
+- Expert review prevents costly rejections
+- Track your application status in real-time
+
+[Start your ITIN application today](/apply) or [view our pricing](/pricing) to get started.`,
 };
 
 export default post;

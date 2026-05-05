@@ -243,9 +243,18 @@ The lowest-cost approach is DIY by mail using your passport. However, this carri
 
 If you're a contractor or employee needing an ITIN for tax withholding purposes, some employers or clients may cover the cost. However, this is not required by law and depends on your arrangement.
 
-## Get Transparent ITIN Pricing
+## Get Your ITIN with ITIN.io
 
-At Clemta, we believe in transparent pricing with no hidden fees. As an IRS-authorized Certifying Acceptance Agent, our ITIN service includes document verification, W-7 preparation, and IRS submission -- all at a clear, upfront price. You'll never need to mail your passport, and our experienced team ensures your application is complete before submission.`,
+Skip the hassle and get your ITIN in 2-4 weeks. As an IRS-authorized Certifying Acceptance Agent, we handle everything — form preparation, document verification via video call, and direct IRS submission. No passport mailing required.
+
+**Why choose ITIN.io?**
+- IRS-authorized Certifying Acceptance Agent (CAA)
+- 2-4 week processing (vs 8-12 weeks DIY)
+- Keep your passport — verify via video call
+- Expert review prevents costly rejections
+- Track your application status in real-time
+
+[Start your ITIN application today](/apply) or [view our pricing](/pricing) to get started.`,
 };
 
 export default post;

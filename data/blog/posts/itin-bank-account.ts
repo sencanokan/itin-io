@@ -264,11 +264,18 @@ In most cases, you can open your account the same day you visit the branch (assu
 
 ---
 
-## Ready to Get Started?
+## Get Your ITIN with ITIN.io
 
-If you don't have an ITIN yet, that's the first step. [Apply through ITIN.io](/apply) and get your ITIN in as little as 2-4 weeks with our IRS-authorized CAA service. Once you have your ITIN, you'll be ready to open your U.S. bank account and access the full American financial system.
+Skip the hassle and get your ITIN in 2-4 weeks. As an IRS-authorized Certifying Acceptance Agent, we handle everything — form preparation, document verification via video call, and direct IRS submission. No passport mailing required.
 
-Need help deciding which bank is right for your situation? [Contact our team](/contact) for personalized guidance based on your specific needs.`,
+**Why choose ITIN.io?**
+- IRS-authorized Certifying Acceptance Agent (CAA)
+- 2-4 week processing (vs 8-12 weeks DIY)
+- Keep your passport — verify via video call
+- Expert review prevents costly rejections
+- Track your application status in real-time
+
+[Start your ITIN application today](/apply) or [view our pricing](/pricing) to get started.`,
 };
 
 export default post;

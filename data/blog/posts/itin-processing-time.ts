@@ -342,9 +342,18 @@ ITINs are valid as long as you use them on a federal tax return at least once ev
 
 ---
 
-## The Bottom Line
+## Get Your ITIN with ITIN.io
 
-The fastest way to get your ITIN in 2026 is through a Certifying Acceptance Agent during off-peak season. With ITIN.io, you can have your ITIN in as little as 2 weeks - compared to 2-3 months by mail. [Start your application today](/apply) and let our IRS-authorized team handle the process from start to finish.`,
+Skip the hassle and get your ITIN in 2-4 weeks. As an IRS-authorized Certifying Acceptance Agent, we handle everything — form preparation, document verification via video call, and direct IRS submission. No passport mailing required.
+
+**Why choose ITIN.io?**
+- IRS-authorized Certifying Acceptance Agent (CAA)
+- 2-4 week processing (vs 8-12 weeks DIY)
+- Keep your passport — verify via video call
+- Expert review prevents costly rejections
+- Track your application status in real-time
+
+[Start your ITIN application today](/apply) or [view our pricing](/pricing) to get started.`,
 };
 
 export default post;
