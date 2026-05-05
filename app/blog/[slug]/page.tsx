@@ -109,8 +109,8 @@ export default function BlogPostPage({ params }: Props) {
 
       {/* Article Content */}
       <article className="py-12 lg:py-16">
-        <div className="container-tight">
-          <div className="mx-auto max-w-3xl">
+        <div className="container-wide">
+          <div className="mx-auto max-w-4xl">
             <BlogContent content={post.content} />
           </div>
         </div>
