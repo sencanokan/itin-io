@@ -77,7 +77,7 @@ export function BlogContent({ content }: Props) {
 
       {/* Article content */}
       <div
-        className="prose prose-slate prose-lg max-w-none min-w-0
+        className="blog-content prose prose-slate prose-lg max-w-none min-w-0
           prose-headings:font-bold prose-headings:tracking-tight prose-headings:scroll-mt-24
           prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:text-slate-900
           prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-slate-800
@@ -105,95 +105,116 @@ function slugify(text: string): string {
     .replace(/(^-|-$)/g, "");
 }
 
-function processMarkdown(md: string): { html: string; toc: TOCItem[] } {
-  let html = md;
-  const toc: TOCItem[] = [];
-
-  // Tables
-  html = html.replace(
-    /\n\|(.+)\|\n\|[-| :]+\|\n((?:\|.+\|\n?)+)/g,
-    (_, header, body) => {
-      const headers = header.split("|").map((h: string) => h.trim()).filter(Boolean);
-      const rows = body.trim().split("\n").map((row: string) =>
-        row.split("|").map((c: string) => c.trim()).filter(Boolean)
-      );
-      const thead = `<thead><tr>${headers.map((h: string) => `<th>${inlineMarkdown(h)}</th>`).join("")}</tr></thead>`;
-      const tbody = `<tbody>${rows.map((row: string[]) => `<tr>${row.map((c: string) => `<td>${inlineMarkdown(c)}</td>`).join("")}</tr>`).join("")}</tbody>`;
-      return `<table>${thead}${tbody}</table>`;
-    }
-  );
-
-  // Headers - extract TOC and add IDs
-  html = html.replace(/^### (.+)$/gm, (_, text) => {
-    const id = slugify(text);
-    toc.push({ id, text, level: 3 });
-    return `<h3 id="${id}">${text}</h3>`;
-  });
-  html = html.replace(/^## (.+)$/gm, (_, text) => {
-    const id = slugify(text);
-    toc.push({ id, text, level: 2 });
-    return `<h2 id="${id}">${text}</h2>`;
-  });
-
-  // Blockquotes
-  html = html.replace(/^> (.+)$/gm, "<blockquote><p>$1</p></blockquote>");
-
-  // Checkbox lists - convert to styled checkboxes (BEFORE regular lists)
-  html = html.replace(
-    /- \[x\] (.+)/g,
-    '- <span class="inline-flex items-center gap-2"><span class="inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded bg-green-100 text-green-600"><svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>$1</span>'
-  );
-  html = html.replace(
-    /- \[ \] (.+)/g,
-    '- <span class="inline-flex items-center gap-2"><span class="inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded border-2 border-slate-300"></span>$1</span>'
-  );
-
-  // Unordered lists
-  html = html.replace(/(?:^- .+\n?)+/gm, (match) => {
-    const items = match.trim().split("\n")
-      .map((line) => `<li>${inlineMarkdown(line.replace(/^- /, ""))}</li>`)
-      .join("");
-    return `<ul>${items}</ul>`;
-  });
-
-  // Ordered lists
-  html = html.replace(/(?:^\d+\. .+\n?)+/gm, (match) => {
-    const items = match.trim().split("\n")
-      .map((line) => `<li>${inlineMarkdown(line.replace(/^\d+\. /, ""))}</li>`)
-      .join("");
-    return `<ol>${items}</ol>`;
-  });
-
-  // Horizontal rule
-  html = html.replace(/^---$/gm, "<hr />");
-
-  // Paragraphs
-  html = html
-    .split("\n\n")
-    .map((block) => {
-      const trimmed = block.trim();
-      if (
-        !trimmed ||
-        trimmed.startsWith("<h") ||
-        trimmed.startsWith("<table") ||
-        trimmed.startsWith("<ul") ||
-        trimmed.startsWith("<ol") ||
-        trimmed.startsWith("<blockquote") ||
-        trimmed.startsWith("<hr")
-      ) {
-        return trimmed;
-      }
-      return `<p>${inlineMarkdown(trimmed)}</p>`;
-    })
-    .join("\n");
-
-  return { html, toc };
+function inlineMarkdown(text: string): string {
+  let r = text;
+  r = r.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  r = r.replace(/\*(.+?)\*/g, "<em>$1</em>");
+  r = r.replace(/`(.+?)`/g, "<code>$1</code>");
+  r = r.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>');
+  return r;
 }
 
-function inlineMarkdown(text: string): string {
-  let result = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-  result = result.replace(/\*(.+?)\*/g, "<em>$1</em>");
-  result = result.replace(/`(.+?)`/g, "<code>$1</code>");
-  result = result.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>');
-  return result;
+function processMarkdown(md: string): { html: string; toc: TOCItem[] } {
+  const toc: TOCItem[] = [];
+  const lines = md.split("\n");
+  const blocks: string[] = [];
+  let current = "";
+
+  // Group lines into blocks separated by blank lines
+  for (const line of lines) {
+    if (line.trim() === "") {
+      if (current.trim()) {
+        blocks.push(current.trim());
+      }
+      current = "";
+    } else {
+      current += (current ? "\n" : "") + line;
+    }
+  }
+  if (current.trim()) blocks.push(current.trim());
+
+  const htmlParts: string[] = [];
+
+  for (const block of blocks) {
+    // Table
+    if (block.includes("|") && block.includes("---")) {
+      const tableLines = block.split("\n");
+      const headerLine = tableLines[0];
+      const bodyLines = tableLines.slice(2); // skip header + separator
+
+      const headers = headerLine.split("|").map((h) => h.trim()).filter(Boolean);
+      const rows = bodyLines.map((row) =>
+        row.split("|").map((c) => c.trim()).filter(Boolean)
+      );
+
+      const thead = `<thead><tr>${headers.map((h) => `<th>${inlineMarkdown(h)}</th>`).join("")}</tr></thead>`;
+      const tbody = `<tbody>${rows.map((row) => `<tr>${row.map((c) => `<td>${inlineMarkdown(c)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+      htmlParts.push(`<table>${thead}${tbody}</table>`);
+      continue;
+    }
+
+    // Heading h2
+    if (block.startsWith("## ")) {
+      const text = block.slice(3);
+      const id = slugify(text);
+      toc.push({ id, text, level: 2 });
+      htmlParts.push(`<h2 id="${id}">${inlineMarkdown(text)}</h2>`);
+      continue;
+    }
+
+    // Heading h3
+    if (block.startsWith("### ")) {
+      const text = block.slice(4);
+      const id = slugify(text);
+      toc.push({ id, text, level: 3 });
+      htmlParts.push(`<h3 id="${id}">${inlineMarkdown(text)}</h3>`);
+      continue;
+    }
+
+    // Horizontal rule
+    if (block === "---") {
+      htmlParts.push("<hr />");
+      continue;
+    }
+
+    // Blockquote
+    if (block.startsWith("> ")) {
+      const content = block.replace(/^> ?/gm, "");
+      htmlParts.push(`<blockquote><p>${inlineMarkdown(content)}</p></blockquote>`);
+      continue;
+    }
+
+    // List block (unordered, ordered, or checkbox)
+    if (block.match(/^(?:- |\d+\. )/)) {
+      const listLines = block.split("\n");
+      const isOrdered = listLines[0].match(/^\d+\. /);
+      const hasCheckbox = listLines.some((l) => l.match(/^- \[[ x]\] /));
+
+      const items = listLines.map((line) => {
+        // Checkbox checked
+        if (line.match(/^- \[x\] /)) {
+          const text = line.replace(/^- \[x\] /, "");
+          return `<li class="flex items-start gap-3 list-none"><span class="inline-flex mt-1 h-5 w-5 flex-shrink-0 items-center justify-center rounded bg-green-100 text-green-600"><svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span><span>${inlineMarkdown(text)}</span></li>`;
+        }
+        // Checkbox unchecked
+        if (line.match(/^- \[ \] /)) {
+          const text = line.replace(/^- \[ \] /, "");
+          return `<li class="flex items-start gap-3 list-none"><span class="inline-flex mt-1 h-5 w-5 flex-shrink-0 items-center justify-center rounded border-2 border-slate-300"></span><span>${inlineMarkdown(text)}</span></li>`;
+        }
+        // Regular list item
+        const text = line.replace(/^(?:- |\d+\. )/, "");
+        return `<li>${inlineMarkdown(text)}</li>`;
+      });
+
+      const tag = isOrdered ? "ol" : "ul";
+      const listClass = hasCheckbox ? ' class="space-y-2 list-none pl-0"' : "";
+      htmlParts.push(`<${tag}${listClass}>${items.join("")}</${tag}>`);
+      continue;
+    }
+
+    // Paragraph (default)
+    htmlParts.push(`<p>${inlineMarkdown(block.replace(/\n/g, " "))}</p>`);
+  }
+
+  return { html: htmlParts.join("\n"), toc };
 }
