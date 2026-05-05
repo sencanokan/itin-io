@@ -64,6 +64,17 @@ export function Header() {
           {/* Desktop CTA */}
           <div className="hidden items-center gap-3 lg:flex">
             <Link
+              href="/blog"
+              className={cn(
+                "rounded-lg px-4 py-2 text-sm font-medium transition-colors",
+                scrolled
+                  ? "text-slate-600 hover:text-slate-900"
+                  : "text-white/80 hover:text-white"
+              )}
+            >
+              Blog
+            </Link>
+            <Link
               href="/about"
               className={cn(
                 "rounded-lg px-4 py-2 text-sm font-medium transition-colors",
@@ -120,6 +131,13 @@ export function Header() {
                     {link.name}
                   </Link>
                 ))}
+                <Link
+                  href="/blog"
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg px-4 py-3 text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                >
+                  Blog
+                </Link>
                 <Link
                   href="/about"
                   onClick={() => setIsOpen(false)}

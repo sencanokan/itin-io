@@ -13,6 +13,7 @@ export const footerLinks = {
     { name: "Apply Now", href: "/apply" },
   ],
   resources: [
+    { name: "Blog", href: "/blog" },
     { name: "How It Works", href: "/how-it-works" },
     { name: "API Documentation", href: "/api-docs" },
     { name: "FAQ", href: "/how-it-works#faq" },
