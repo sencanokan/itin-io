@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "About",
   description:
     "ITIN.io is powered by Clemta, an IRS-authorized Certifying Acceptance Agent with offices in Texas, London, and Istanbul. Learn about our mission and team.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

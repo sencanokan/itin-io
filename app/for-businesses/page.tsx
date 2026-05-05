@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "ITIN for Businesses - Whitelabel ITIN Services",
   description:
     "Offer ITIN services under your brand. API integration, custom dashboard, bulk processing for accounting firms, immigration attorneys, and fintech companies.",
+  alternates: { canonical: "/for-businesses" },
 };
 
 export default function ForBusinessesPage() {

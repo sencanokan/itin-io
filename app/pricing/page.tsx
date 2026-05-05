@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Pricing",
   description:
     "Transparent ITIN service pricing for individuals and business partners. Starting from $349 per application.",
+  alternates: { canonical: "/pricing" },
 };
 
 export default function PricingPage() {

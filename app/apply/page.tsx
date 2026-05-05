@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Apply for ITIN",
   description:
     "Start your ITIN application online. Check your eligibility and begin the process in minutes. IRS-authorized processing.",
+  alternates: { canonical: "/apply" },
 };
 
 export default function ApplyPage() {
