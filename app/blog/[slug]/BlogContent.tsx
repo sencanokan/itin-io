@@ -135,6 +135,22 @@ function processMarkdown(md: string): { html: string; toc: TOCItem[] } {
 
   const htmlParts: string[] = [];
 
+  // Count h2 headings to find midpoint for inline CTA
+  const h2Count = blocks.filter((b) => b.startsWith("## ")).length;
+  const midH2 = Math.ceil(h2Count / 2); // insert CTA after this many h2s
+  let h2Seen = 0;
+  let ctaInserted = false;
+
+  const inlineCta = `<div class="not-prose my-10 rounded-2xl border border-primary-200 bg-gradient-to-br from-primary-50 to-white p-6 lg:p-8">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="text-lg font-bold text-slate-900">Need an ITIN? We can help.</p>
+      <p class="mt-1 text-sm text-slate-600">IRS-authorized processing in 2-4 weeks. No passport mailing required.</p>
+    </div>
+    <a href="/apply" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-primary-500 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-primary-600 hover:shadow-lg">Apply Now &rarr;</a>
+  </div>
+</div>`;
+
   for (const block of blocks) {
     // Table
     if (block.includes("|") && block.includes("---")) {
@@ -155,6 +171,12 @@ function processMarkdown(md: string): { html: string; toc: TOCItem[] } {
 
     // Heading h2
     if (block.startsWith("## ")) {
+      h2Seen++;
+      // Insert inline CTA after the midpoint h2
+      if (h2Seen === midH2 + 1 && !ctaInserted) {
+        htmlParts.push(inlineCta);
+        ctaInserted = true;
+      }
       const text = block.slice(3);
       const id = slugify(text);
       toc.push({ id, text, level: 2 });
