@@ -94,9 +94,9 @@ function markdownToHtml(md: string): string {
     }
   );
 
-  // Checkbox lists
-  html = html.replace(/- \[ \] /g, "- ");
-  html = html.replace(/- \[x\] /g, "- ");
+  // Checkbox lists - convert to styled checkboxes
+  html = html.replace(/- \[x\] (.+)/g, '- <span class="inline-flex items-center gap-2"><span class="inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded bg-green-100 text-green-600"><svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>$1</span>');
+  html = html.replace(/- \[ \] (.+)/g, '- <span class="inline-flex items-center gap-2"><span class="inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded border-2 border-slate-300"></span>$1</span>');
 
   // Horizontal rule
   html = html.replace(/^---$/gm, "<hr />");
